@@ -21,7 +21,8 @@ usersRouter.get('/', function(req, res, next) {
  * 
  * Create a new user
  */
-usersRouter.post('/', function(req, res, next) {
+usersRouter.post('/', async (req, res) => {
+  console.log("HERE");
   let user: User = req.body;
   userService.create(user);
   res.send({title: 'Created User', data: user});

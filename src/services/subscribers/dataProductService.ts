@@ -1,11 +1,12 @@
 import { dataProductCache } from '../../cache';
+import { PubSubDB } from '../../datastore/couchdb';
 import { DataProduct, User } from '../model';
 import { IMessageConsumerService, MessageProducer, MessageProducerConfig } from '../messenger';
 import { v4 as uuidv4 } from 'uuid';
 
 interface IDataProductService {
-    all(): string;
-    create(data: DataProduct): string;
+    all(): Promise<DataProduct[]>;
+    create(data: DataProduct);
 }
 
 class DataProductService implements IDataProductService, IMessageConsumerService {
@@ -13,17 +14,15 @@ class DataProductService implements IDataProductService, IMessageConsumerService
         console.log("NEW Data Product Service");
     }
 
-    all(): string {
-        let data = dataProductCache.mget(dataProductCache.keys());
-        return JSON.stringify(data);
+    public async all(): Promise<DataProduct[]> {
+        let result = await PubSubDB.partitionedList(this.partitionName(), { include_docs: true });
+        console.log("DATA: " + JSON.stringify(result));
+        return result.rows;
     }
 
-    create(data: DataProduct): string {
-        let id: string = uuidv4();
-        data.id = id;
-        dataProductCache.set(id, data);
-        this.publishMessage(data, 'dataproducts.create');
-        return id;
+    public async create(data: DataProduct) {
+        const id = this.createPartitionKey();
+        return await PubSubDB.insert({_id: id, data: data});
     }
 
     consume(message: string) {
@@ -46,6 +45,14 @@ class DataProductService implements IDataProductService, IMessageConsumerService
         console.log("Publishing Message: %s", message);
         MessageProducer.publish(new MessageProducerConfig('jllis.topics', topic, message));
         console.log("Published Message");
+    }
+
+    private createPartitionKey(): string {
+        return this.partitionName() + ":" + uuidv4();
+    }
+
+    private partitionName(): string {
+        return 'DATAPRODUCTS';
     }
 }
 

@@ -11,9 +11,9 @@ const dataProductRouter = express.Router();
 /**
  * GET /dataproducts
  */
-dataProductRouter.get('/', function(req, res, next) {
+dataProductRouter.get('/', async(req, res, next) => {
   console.log("Get All Data Products");
-  let data = dataProductService.all();
+  let data = await dataProductService.all();
   res.json(data);
 });
 
@@ -22,7 +22,7 @@ dataProductRouter.get('/', function(req, res, next) {
  * 
  * Create a new Data Products
  */
-dataProductRouter.post('/', function(req, res, next) {
+dataProductRouter.post('/', async (req, res, next) => {
   console.log("Post Data Products");
   let dataProduct: DataProduct = req.body;
   dataProductService.create(dataProduct);

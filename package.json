@@ -1,0 +1,36 @@
+{
+  "name": "pub-sub-app",
+  "version": "0.0.0",
+  "private": true,
+  "main": "dist/app.js",
+  "scripts": {
+    "build": "rimraf dist && tsc",
+    "test:integration": "npm run mq:start && npm run test",
+    "test": "jest --coverage",
+    "start": "npm run build && nodemon -r ts-node/register dist/app.js",
+    "mq:install": "docker run --hostname jllis-msg --name jllis-msg -p 5672:5672 -p 8080:15672 rabbitmq:3-management",
+    "mq:stop": "docker stop jllis-msg",
+    "mq:start": "docker start jllis-msg",
+    "clean": "rimraf dist coverage",
+    "reset": "rm -rf node_modules dist coverage"
+  },
+  "dependencies": {
+    "amqplib": "^0.5.6",
+    "cookie-parser": "^1.4.5",
+    "express": "~4.16.1",
+    "http-errors": "~1.6.3",
+    "morgan": "~1.9.1",
+    "node-cache": "^5.1.0",
+    "rimraf": "^3.0.2",
+    "typescript": "^3.9.3",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^25.2.3",
+    "jest": "^26.0.1",
+    "debug": "~2.6.9",
+    "nodemon": "^2.0.4",
+    "ts-jest": "^26.0.0",
+    "ts-node": "^8.10.2"
+  }
+}

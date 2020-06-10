@@ -1,0 +1,13 @@
+{
+    "compilerOptions": {
+        "target": "ES5",
+        "outDir": "dist",
+        "removeComments": true,
+        "preserveConstEnums": true,
+        "allowSyntheticDefaultImports": true,
+        "baseUrl": ".",
+        "sourceMap": true
+    },
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "**/*.test.ts", "**/*.spec.ts"]
+}

@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "ab6e73e6-b06e-4a33-9507-c9b32a530a08",
-		"name": "JLLIS Messaging",
+		"_postman_id": "a314d917-458c-483d-89e0-480766502e10",
+		"name": "PubSub Integration Tests",
 		"description": "Testing messaging patterns for FMRD and JLLIS",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
